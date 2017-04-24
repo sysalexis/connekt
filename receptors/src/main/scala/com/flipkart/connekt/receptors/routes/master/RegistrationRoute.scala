@@ -72,7 +72,7 @@ class RegistrationRoute(implicit am: ActorMaterializer) extends BaseJsonHandler 
                               complete(GenericResponse(StatusCodes.NotFound.intValue, null, Response(s"No Device Found for $appName / $deviceId", null)))
                           }
                         }
-                      } ~ patch {
+                      } ~ ( patch | post) {
                         meteredResource(s"patch.$platform.$appName") {
                           entity(as[Map[String, AnyRef]]) { patchedDevice =>
                             if (!tR) {
