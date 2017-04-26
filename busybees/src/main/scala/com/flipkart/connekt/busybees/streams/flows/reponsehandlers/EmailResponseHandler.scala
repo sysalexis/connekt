@@ -62,7 +62,7 @@ class EmailResponseHandler(parallelism:Int)(implicit m: Materializer, ec: Execut
             Left((requestTracker.to ++ requestTracker.cc).map(t => EmailCallbackEvent(requestTracker.messageId, requestTracker.clientId, t, EmailResponseStatus.InternalError, requestTracker.appName, requestTracker.contextId, emailResponse.message)))
           case w =>
             ServiceFactory.getReportingService.recordChannelStatsDelta(clientId = requestTracker.clientId, contextId = Option(requestTracker.contextId), stencilId = requestTracker.meta.get("stencilId").map(_.toString), channel = Channel.EMAIL, appName = requestTracker.appName, event = EmailResponseStatus.Error)
-            ConnektLogger(LogFile.PROCESSORS).error(s"OpenWebResponseHandler http response - response unhandled for: ${emailResponse.providerName}/${emailResponse.messageId},  code: ${emailResponse.responseCode}, response: ${emailResponse.message}, provider: ${requestTracker.provider}")
+            ConnektLogger(LogFile.PROCESSORS).error(s"EmailResponseHandler http response - response unhandled for: ${emailResponse.providerName}/${emailResponse.messageId},  code: ${emailResponse.responseCode}, response: ${emailResponse.message}, provider: ${requestTracker.provider}")
             Left((requestTracker.to ++ requestTracker.cc).map(t => EmailCallbackEvent(requestTracker.messageId, requestTracker.clientId, t, EmailResponseStatus.Error, requestTracker.appName, requestTracker.contextId, emailResponse.message)))
         }
 
